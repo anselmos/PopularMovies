@@ -43,7 +43,12 @@ public class UrlBuilder {
                 .appendPath(API_MOVIE);
     }
 
-    public String build(SORT_BY sortType, MainActivity activity){
+    public String build(SORT_BY sortType, String apiKey){
+        /**
+         * Main url builder
+         *
+         * @parameter sortType - uses SORT_BY enum
+         */
         
         Uri.Builder builder = this.buildBaseUrl();
         if(sortType == SORT_BY.MOST_POPULAR){
@@ -55,7 +60,7 @@ public class UrlBuilder {
             builder.appendPath(API_TOP_RATED);
             
         }
-        builder.appendQueryParameter(QUERY_API_KEY, activity.getApiKey());
+        builder.appendQueryParameter(QUERY_API_KEY, apiKey);
         return builder.toString();
         
     }
