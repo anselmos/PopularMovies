@@ -2,14 +2,19 @@ package com.github.anselmos.popularmovies;
 
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
+import com.github.anselmos.popularmovies.utils.PosterUrlBuilder;
+import com.github.anselmos.popularmovies.utils.UrlBuilder;
+import com.squareup.picasso.Picasso;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +41,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        TextView movies_list = (TextView) findViewById(R.id.movies_list);
+        ImageView view1 = (ImageView) findViewById(R.id.image1);
         for(PopularEntity popularEntity: movies){
-            movies_list.append(popularEntity.getOriginal_title());
+            String url = PosterUrlBuilder.API+"w500"+popularEntity.getPoster_path();
+            System.out.println(url);
+            Picasso.with(this).load(url).into(view1);
+            //movies_list.append(popularEntity.getOriginal_title());
         }
         
     }
