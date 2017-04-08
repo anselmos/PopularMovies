@@ -9,8 +9,15 @@ import com.squareup.picasso.Picasso;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.updateMovies();
+        
     
     }
     
@@ -33,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateMovies(){
         AsyncTask<String, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(this.getApiKey());
         ArrayList<PopularEntity> movies  = null;
-    
+        // ArrayAdapter<PopularEntity> a = new ArrayAdapter<PopularEntity>(this, R.layout.posters_layout);
         try {
             movies = (ArrayList<PopularEntity>) task.get();
         } catch (InterruptedException e) {
@@ -41,13 +49,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        ImageView view1 = (ImageView) findViewById(R.id.image1);
-        for(PopularEntity popularEntity: movies){
-            String url = PosterUrlBuilder.API+"w500"+popularEntity.getPoster_path();
-            System.out.println(url);
-            Picasso.with(this).load(url).into(view1);
-            //movies_list.append(popularEntity.getOriginal_title());
-        }
+    
+        GridView gridview = (GridView) this.findViewById(R.id.poster_grid);
+        MoviesGridViewAdapter moviesAdapter = new MoviesGridViewAdapter(this, movies);
+        gridview.setAdapter(moviesAdapter);
+    
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                Toast.makeText(MainActivity.this, "" + position,
+                Toast.LENGTH_SHORT).show();
+            }
+        });
+    
+    
         
     }
 }
