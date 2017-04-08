@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-    
                 
                 PopularEntity popularEntity = (PopularEntity) moviesAdapter.getItem(position);
                 Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);

@@ -1,5 +1,8 @@
 package com.github.anselmos.popularmovies.entity.jsonapi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by anselmos on 07.04.17.
  */
@@ -18,11 +21,22 @@ public class PopularEntity {
     public float popularity;
     public int vote_count;
     public boolean video;
-    public int vote_average;
+    public double vote_average;
     
-    public PopularEntity(String original_title, String poster_path){
-        this.setOriginal_title(original_title);
-        this.setPoster_path(poster_path);
+    public PopularEntity(){
+    }
+    
+    public void parseJSONObject(JSONObject object) throws JSONException {
+        
+        this.setOriginal_title(object.get("original_title").toString());
+        this.setPoster_path(object.get("poster_path").toString());
+        this.setAdult(object.get("adult").toString());
+        this.setOverview(object.get("overview").toString());
+        this.setRelease_date(object.get("release_date").toString());
+        this.setVote_average(object.getDouble("vote_average"));
+    }
+    public String toString(){
+        return this.original_title + " , "+ this.release_date;
     }
     
     public String getPoster_path() {
@@ -129,11 +143,11 @@ public class PopularEntity {
         this.video = video;
     }
     
-    public int getVote_average() {
+    public double getVote_average() {
         return vote_average;
     }
     
-    public void setVote_average(final int vote_average) {
+    public void setVote_average(final double vote_average) {
         this.vote_average = vote_average;
     }
 }

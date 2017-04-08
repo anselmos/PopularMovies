@@ -37,7 +37,7 @@ public class MoviesGridViewAdapter extends BaseAdapter{
     
     @Override
     public long getItemId(final int position) {
-        return 0;
+        return position;
     }
     
     @Override
@@ -50,7 +50,6 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         ImageView imageView = new ImageView(this.mContext);
         final PopularEntity popularEntity = this.list.get(position);
         String url = PosterUrlBuilder.API+"w500"+popularEntity.getPoster_path();
-        //System.out.println(url);
         Picasso.with(this.mContext).load(url).into(imageView);
         return imageView;
     }

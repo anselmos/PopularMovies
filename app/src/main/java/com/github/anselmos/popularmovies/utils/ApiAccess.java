@@ -49,7 +49,8 @@ public class ApiAccess {
             arrayResults = (JSONArray) jsonObject.get("results");
             
         }catch(JSONException e){
-            
+    
+            e.printStackTrace();
         }
         return decodeJSONArray(arrayResults);
     }
@@ -60,7 +61,9 @@ public class ApiAccess {
         ArrayList<PopularEntity> popularEntities = new ArrayList<PopularEntity>();
         for (int i=0; i < array.length(); i++){
             JSONObject arrayObject = array.getJSONObject(i);
-            PopularEntity movie = new PopularEntity(arrayObject.get("original_title").toString(), arrayObject.get("poster_path").toString());
+            PopularEntity movie = new PopularEntity();
+            movie.parseJSONObject(arrayObject);
+            System.out.println(popularEntities.size());
             popularEntities.add(movie);
         }
         return popularEntities;

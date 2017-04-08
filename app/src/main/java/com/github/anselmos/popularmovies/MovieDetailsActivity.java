@@ -20,6 +20,7 @@ public class MovieDetailsActivity extends AppCompatActivity{
     public void updateMovieDetails(Bundle extras){
         TextView original_title = (TextView) this.findViewById(R.id.original_title);
         original_title.setText(extras.getString("original_title"));
+        System.out.println(extras.getString("release_date"));
         
         TextView plot_synopsis_overview = (TextView) this.findViewById(R.id.plot_synopsis_overview);
         plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
