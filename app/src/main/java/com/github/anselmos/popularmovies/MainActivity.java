@@ -6,6 +6,7 @@ import com.github.anselmos.popularmovies.utils.PosterUrlBuilder;
 import com.github.anselmos.popularmovies.utils.UrlBuilder;
 import com.squareup.picasso.Picasso;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.updateMovies();
-        
-    
     }
     
     public String getApiKey(){
@@ -51,18 +50,23 @@ public class MainActivity extends AppCompatActivity {
         }
     
         GridView gridview = (GridView) this.findViewById(R.id.poster_grid);
-        MoviesGridViewAdapter moviesAdapter = new MoviesGridViewAdapter(this, movies);
+        final MoviesGridViewAdapter moviesAdapter = new MoviesGridViewAdapter(this, movies);
         gridview.setAdapter(moviesAdapter);
     
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                Toast.makeText(MainActivity.this, "" + position,
-                Toast.LENGTH_SHORT).show();
+    
+                
+                PopularEntity popularEntity = (PopularEntity) moviesAdapter.getItem(position);
+                Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+                detailsIntent.putExtra("original_title", popularEntity.getOriginal_title());
+                detailsIntent.putExtra("image_thumbnail", popularEntity.getPoster_path());
+                detailsIntent.putExtra("plot_synopsis_overview", popularEntity.getOverview());
+                detailsIntent.putExtra("vote_average", String.valueOf(popularEntity.getVote_average()));
+                detailsIntent.putExtra("release_date", popularEntity.getRelease_date());
+                startActivity(detailsIntent);
+    
             }
         });
-    
-    
-        
     }
 }

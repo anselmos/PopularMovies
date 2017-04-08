@@ -32,7 +32,7 @@ public class MoviesGridViewAdapter extends BaseAdapter{
     
     @Override
     public Object getItem(final int position) {
-        return null;
+        return this.list.get(position);
     }
     
     @Override
@@ -48,10 +48,9 @@ public class MoviesGridViewAdapter extends BaseAdapter{
             convertView = layoutInflater.inflate(R.layout.activity_main, null);
         }
         ImageView imageView = new ImageView(this.mContext);
-    
-    
         final PopularEntity popularEntity = this.list.get(position);
         String url = PosterUrlBuilder.API+"w500"+popularEntity.getPoster_path();
+        //System.out.println(url);
         Picasso.with(this.mContext).load(url).into(imageView);
         return imageView;
     }
