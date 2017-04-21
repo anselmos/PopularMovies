@@ -64,9 +64,8 @@ public class MainActivity extends AppCompatActivity {
         param.setKey(this.getApiKey());
         param.setSortBy(sortBy);
         AsyncTask<MoviesDoInBackgroundParameter, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(param);
-        
         try {
-            this.movies = (ArrayList<PopularEntity>) task.get();
+            this.movies = ((ArrayList<PopularEntity>) task.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -85,13 +84,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.most_popular:
-                this.movies.clear();
-                this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
                 this.adapter.refreshEvents(this.movies);
                 return true;
             
             case R.id.top_rated:
-                this.movies.clear();
                 this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
                 this.adapter.refreshEvents(this.movies);
                 return true;
