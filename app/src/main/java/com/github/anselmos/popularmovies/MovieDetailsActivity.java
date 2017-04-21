@@ -30,7 +30,7 @@ public class MovieDetailsActivity extends AppCompatActivity{
         plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
     
         ImageView imageView = (ImageView) this.findViewById(R.id.image_thumbnail);
-        ApiAccess.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"), ImageSize.SMALL);
+        ApiAccess.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"), ImageSize.MEDIUM);
         TextView vote_average = (TextView) this.findViewById(R.id.vote_average);
         vote_average.setText(extras.getString("vote_average"));
         

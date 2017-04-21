@@ -7,9 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -62,4 +64,12 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);//Menu Resource, Menu
         return true;
     }
-}
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(this.getApplicationContext(), "Hello replace this with reloading images to by toprated/top...",Toast.LENGTH_LONG ).show();
+                return true;
+        }
+        return true;
+        }
+    }
