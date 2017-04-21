@@ -49,12 +49,12 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         }
         ImageView imageView = new ImageView(this.mContext);
         final PopularEntity popularEntity = this.list.get(position);
-        insertImageInView(imageView, popularEntity.getPoster_path());
+        insertImageInView(this.mContext, imageView, popularEntity.getPoster_path());
         return imageView;
     }
     
-    private void insertImageInView(final ImageView imageView, final String imagePath) {
-        String url = PosterUrlBuilder.API+"w154"+imagePath;
-        Picasso.with(this.mContext).load(url).into(imageView);
+    public static void insertImageInView(final Context context, final ImageView imageView, final String imagePath) {
+        String url = new PosterUrlBuilder().getSmallImage(imagePath);
+        Picasso.with(context).load(url).into(imageView);
     }
 }

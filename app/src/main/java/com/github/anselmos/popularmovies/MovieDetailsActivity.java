@@ -30,12 +30,12 @@ public class MovieDetailsActivity extends AppCompatActivity{
         plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
     
         ImageView imageView = (ImageView) this.findViewById(R.id.image_thumbnail);
-        String url = PosterUrlBuilder.API+"w500"+extras.getString("image_thumbnail");
-        Picasso.with(this).load(url).into(imageView);
+        MoviesGridViewAdapter.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"));
         TextView vote_average = (TextView) this.findViewById(R.id.vote_average);
         vote_average.setText(extras.getString("vote_average"));
         
         TextView release_date = (TextView) this.findViewById(R.id.release_date);
         release_date.setText(extras.getString("release_date"));
     }
+    
 }
