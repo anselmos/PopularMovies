@@ -63,7 +63,6 @@ public class ApiAccess {
             JSONObject arrayObject = array.getJSONObject(i);
             PopularEntity movie = new PopularEntity();
             movie.parseJSONObject(arrayObject);
-            System.out.println(popularEntities.size());
             popularEntities.add(movie);
         }
         return popularEntities;

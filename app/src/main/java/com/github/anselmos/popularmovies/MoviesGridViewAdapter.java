@@ -49,7 +49,7 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         }
         ImageView imageView = new ImageView(this.mContext);
         final PopularEntity popularEntity = this.list.get(position);
-        String url = PosterUrlBuilder.API+"w500"+popularEntity.getPoster_path();
+        String url = PosterUrlBuilder.API+"w154"+popularEntity.getPoster_path();
         Picasso.with(this.mContext).load(url).into(imageView);
         return imageView;
     }
