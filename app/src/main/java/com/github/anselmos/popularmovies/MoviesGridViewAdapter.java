@@ -2,8 +2,6 @@ package com.github.anselmos.popularmovies;
 
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
-import com.github.anselmos.popularmovies.utils.PosterUrlBuilder;
-import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.anselmos.popularmovies.utils.ApiAccess.insertImageInView;
 
@@ -56,5 +55,10 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         return imageView;
     }
     
+    public void refreshEvents(List<PopularEntity> movies){
+        this.list.clear();
+        this.list.addAll(movies);
+        notifyDataSetChanged();
+    }
 
 }
