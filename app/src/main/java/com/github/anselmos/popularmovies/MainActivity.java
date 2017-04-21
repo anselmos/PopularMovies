@@ -1,6 +1,8 @@
 package com.github.anselmos.popularmovies;
 
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
+import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,19 +35,14 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void updateMovies() {
-        AsyncTask<String, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(this.getApiKey());
-        
-        try {
-            movies = (ArrayList<PopularEntity>) task.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        /**
+         * By default makes order by MOST POPULAR.
+         */
+        downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
     
         GridView gridview = (GridView) this.findViewById(R.id.poster_grid);
-        adapter = createAdapter(this.getApplicationContext(), movies);
-        gridview.setAdapter(adapter);
+        this.adapter = createAdapter(this.getApplicationContext(), this.movies);
+        gridview.setAdapter(this.adapter);
         
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -62,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     
+    private void downloadMoviesList(UrlBuilder.SORT_BY sortBy) {
+        MoviesDoInBackgroundParameter param = new MoviesDoInBackgroundParameter();
+        param.setKey(this.getApiKey());
+        param.setSortBy(sortBy);
+        AsyncTask<MoviesDoInBackgroundParameter, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(param);
+        
+        try {
+            this.movies = (ArrayList<PopularEntity>) task.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);//Menu Resource, Menu
@@ -72,9 +84,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item1:
-                Toast.makeText(this.getApplicationContext(), "Hello replace this with reloading images to by toprated/top...",Toast.LENGTH_LONG ).show();
-                this.adapter.refreshEvents(new ArrayList<PopularEntity>());
+            case R.id.most_popular:
+                this.movies.clear();
+                this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                this.adapter.refreshEvents(this.movies);
+                return true;
+            
+            case R.id.top_rated:
+                this.movies.clear();
+                this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                this.adapter.refreshEvents(this.movies);
                 return true;
         }
         return true;

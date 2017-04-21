@@ -51,15 +51,15 @@ public class UrlBuilder {
          */
         
         Uri.Builder builder = this.buildBaseUrl();
-        if(sortType == SORT_BY.MOST_POPULAR){
-            
-            builder.appendPath(API_MOST_POPULAR);
-            
-        }else if(sortType == SORT_BY.TOP_RATED){
-            
-            builder.appendPath(API_TOP_RATED);
-            
+        switch(sortType){
+            case MOST_POPULAR:
+                builder.appendPath(API_MOST_POPULAR);
+                break;
+            case TOP_RATED:
+                builder.appendPath(API_TOP_RATED);
+                break;
         }
+        
         builder.appendQueryParameter(QUERY_API_KEY, apiKey);
         return builder.toString();
         

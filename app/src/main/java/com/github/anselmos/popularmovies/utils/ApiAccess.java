@@ -18,15 +18,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.github.anselmos.popularmovies.utils.UrlBuilder.SORT_BY.MOST_POPULAR;
+import static com.github.anselmos.popularmovies.utils.UrlBuilder.SORT_BY.*;
 
 /**
  * Created by anselmos on 07.04.17.
  */
 public class ApiAccess {
     
-    public ArrayList<PopularEntity> getMovies(String apiKey) throws JSONException {
-        String url = new UrlBuilder().build(MOST_POPULAR, apiKey);
+    public ArrayList<PopularEntity> getMovies(String apiKey, UrlBuilder.SORT_BY sortBy) throws JSONException {
+        String url = new UrlBuilder().build(sortBy, apiKey);
         OkHttpClient client = new OkHttpClient();
         Response response = null;
         try {

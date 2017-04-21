@@ -2,6 +2,8 @@ package com.github.anselmos.popularmovies;
 
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
+import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
+import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
 import org.json.JSONException;
 
@@ -12,12 +14,13 @@ import java.util.ArrayList;
 /**
  * Created by anselmos on 07.04.17.
  */
-public class DownloadMoviesAsyncTask extends AsyncTask<String, Integer, ArrayList<PopularEntity>> {
+public class DownloadMoviesAsyncTask extends AsyncTask<MoviesDoInBackgroundParameter, Integer, ArrayList<PopularEntity>> {
     
-    protected ArrayList<PopularEntity> doInBackground(String... apiKey){
+    protected ArrayList<PopularEntity> doInBackground(MoviesDoInBackgroundParameter... parameters){
+        MoviesDoInBackgroundParameter param = parameters[0];
         ArrayList<PopularEntity> movies =null;
         try {
-             movies = new ApiAccess().getMovies(apiKey[0]);
+             movies = new ApiAccess().getMovies(param.getKey(), param.getSortBy());
         }catch(JSONException e){
             
         }

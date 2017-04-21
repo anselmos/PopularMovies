@@ -4,4 +4,6 @@
     <string name="plot_synopsis_overview_name">Overview</string>
     <string name="vote_average">Vote Average</string>
     <string name="release_date">Release Date</string>
+    <string name="top_rated_name">Top Rated</string>
+    <string name="most_popular_name">Most Popular</string>
 </resources>
