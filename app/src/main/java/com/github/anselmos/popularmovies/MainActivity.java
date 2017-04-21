@@ -14,14 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
+    
     ArrayList<PopularEntity> movies = null;
+    
     MoviesGridViewAdapter adapter = null;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
          * By default makes order by MOST POPULAR.
          */
         downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
-    
+        
         GridView gridview = (GridView) this.findViewById(R.id.poster_grid);
         this.adapter = createAdapter(this.getApplicationContext(), this.movies);
         gridview.setAdapter(this.adapter);
@@ -78,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);//Menu Resource, Menu
         return true;
     }
-    public MoviesGridViewAdapter createAdapter(Context context, ArrayList<PopularEntity> movies){
+    
+    public MoviesGridViewAdapter createAdapter(Context context, ArrayList<PopularEntity> movies) {
         return new MoviesGridViewAdapter(context, movies);
     }
+    
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.most_popular:
@@ -94,5 +98,5 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return true;
-        }
     }
+}

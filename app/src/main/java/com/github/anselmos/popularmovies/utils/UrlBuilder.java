@@ -42,7 +42,7 @@ public class UrlBuilder {
                 .appendPath(API_VERSION)
                 .appendPath(API_MOVIE);
     }
-
+    
     public String build(SORT_BY sortType, String apiKey){
         /**
          * Main url builder

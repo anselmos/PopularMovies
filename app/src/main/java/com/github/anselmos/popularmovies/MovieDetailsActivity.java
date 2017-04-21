@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by anselmos on 08.04.17.
  */
-public class MovieDetailsActivity extends AppCompatActivity{
+public class MovieDetailsActivity extends AppCompatActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +21,14 @@ public class MovieDetailsActivity extends AppCompatActivity{
         this.updateMovieDetails(extras);
     }
     
-    public void updateMovieDetails(Bundle extras){
+    public void updateMovieDetails(Bundle extras) {
         TextView original_title = (TextView) this.findViewById(R.id.original_title);
         original_title.setText(extras.getString("original_title"));
         System.out.println(extras.getString("release_date"));
         
         TextView plot_synopsis_overview = (TextView) this.findViewById(R.id.plot_synopsis_overview);
         plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
-    
+        
         ImageView imageView = (ImageView) this.findViewById(R.id.image_thumbnail);
         ApiAccess.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"), ImageSize.MEDIUM);
         TextView vote_average = (TextView) this.findViewById(R.id.vote_average);
@@ -37,5 +37,4 @@ public class MovieDetailsActivity extends AppCompatActivity{
         TextView release_date = (TextView) this.findViewById(R.id.release_date);
         release_date.setText(extras.getString("release_date"));
     }
-    
 }

@@ -18,15 +18,17 @@ import static com.github.anselmos.popularmovies.utils.ApiAccess.insertImageInVie
 /**
  * Created by anselmos on 08.04.17.
  */
-public class MoviesGridViewAdapter extends BaseAdapter{
+public class MoviesGridViewAdapter extends BaseAdapter {
     
     private final Context mContext;
+    
     private final ArrayList<PopularEntity> list;
     
-    public MoviesGridViewAdapter(Context context, ArrayList<PopularEntity> list){
+    public MoviesGridViewAdapter(Context context, ArrayList<PopularEntity> list) {
         this.mContext = context;
         this.list = list;
     }
+    
     @Override
     public int getCount() {
         return this.list.size();
@@ -55,10 +57,9 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         return imageView;
     }
     
-    public void refreshEvents(List<PopularEntity> movies){
+    public void refreshEvents(List<PopularEntity> movies) {
         this.list.clear();
         this.list.addAll(movies);
         notifyDataSetChanged();
     }
-
 }

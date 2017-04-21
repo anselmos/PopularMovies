@@ -36,7 +36,7 @@ public class ApiAccess {
         } catch (IOException e) {
             //e.printStackTrace();
         }
-    
+        
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response.body().string());
@@ -46,23 +46,23 @@ public class ApiAccess {
             //e.printStackTrace();
         }
         ArrayList<PopularEntity> results = null;
-    
+        
         JSONArray arrayResults = null;
-        try{
+        try {
             arrayResults = (JSONArray) jsonObject.get("results");
+        } catch (JSONException e) {
             
-        }catch(JSONException e){
-    
             e.printStackTrace();
         }
         return decodeJSONArray(arrayResults);
     }
-    public ArrayList<PopularEntity> decodeJSONArray(JSONArray array) throws JSONException{
+    
+    public ArrayList<PopularEntity> decodeJSONArray(JSONArray array) throws JSONException {
         /**
          * Decodes data from JSONArray to popularEntity
          */
         ArrayList<PopularEntity> popularEntities = new ArrayList<PopularEntity>();
-        for (int i=0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             JSONObject arrayObject = array.getJSONObject(i);
             PopularEntity movie = new PopularEntity();
             movie.parseJSONObject(arrayObject);
@@ -70,8 +70,9 @@ public class ApiAccess {
         }
         return popularEntities;
     }
+    
     public static void insertImageInView(final Context context, final ImageView imageView, final String imagePath, ImageSize imageSize) {
-        switch(imageSize){
+        switch (imageSize) {
             case SMALL:
                 Picasso.with(context).load(new PosterUrlBuilder().getSmallImage(imagePath)).into(imageView);
                 break;
@@ -82,7 +83,6 @@ public class ApiAccess {
                 Picasso.with(context).load(new PosterUrlBuilder().getLargeImage(imagePath)).into(imageView);
                 break;
         }
-        
     }
 }
 
