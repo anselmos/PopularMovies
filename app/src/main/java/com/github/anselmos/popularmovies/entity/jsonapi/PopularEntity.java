@@ -6,6 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by anselmos on 07.04.17.
  */
+//TODO move to parcelable
 public class PopularEntity {
     
     public String poster_path;

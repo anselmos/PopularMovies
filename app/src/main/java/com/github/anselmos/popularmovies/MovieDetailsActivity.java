@@ -20,7 +20,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         this.updateMovieDetails(extras);
     }
-    
+    //TODO refactor code - DRY principle - all textview setups move to setTextView(R.id.X, Text)
     public void updateMovieDetails(Bundle extras) {
         TextView original_title = (TextView) this.findViewById(R.id.original_title);
         original_title.setText(extras.getString("original_title"));

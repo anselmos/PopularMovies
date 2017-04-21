@@ -18,6 +18,11 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+//TODO move to fragments!
+
+//TODO add endless scrolling
+
+//TODO add more then one element per line
 public class MainActivity extends AppCompatActivity {
     
     ArrayList<PopularEntity> movies = null;
