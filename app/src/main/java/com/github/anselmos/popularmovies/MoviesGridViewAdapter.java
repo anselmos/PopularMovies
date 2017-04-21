@@ -1,5 +1,6 @@
 package com.github.anselmos.popularmovies;
 
+import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.PosterUrlBuilder;
 import com.squareup.picasso.Picasso;
@@ -12,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+
+import static com.github.anselmos.popularmovies.utils.ApiAccess.insertImageInView;
 
 /**
  * Created by anselmos on 08.04.17.
@@ -49,12 +52,9 @@ public class MoviesGridViewAdapter extends BaseAdapter{
         }
         ImageView imageView = new ImageView(this.mContext);
         final PopularEntity popularEntity = this.list.get(position);
-        insertImageInView(this.mContext, imageView, popularEntity.getPoster_path());
+        insertImageInView(this.mContext, imageView, popularEntity.getPoster_path(), ImageSize.MEDIUM);
         return imageView;
     }
     
-    public static void insertImageInView(final Context context, final ImageView imageView, final String imagePath) {
-        String url = new PosterUrlBuilder().getSmallImage(imagePath);
-        Picasso.with(context).load(url).into(imageView);
-    }
+
 }

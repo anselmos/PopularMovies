@@ -1,12 +1,15 @@
 package com.github.anselmos.popularmovies.utils;
 
-import com.github.anselmos.popularmovies.MainActivity;
-import com.github.anselmos.popularmovies.entity.db.Movie;
+import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.content.Context;
+import android.widget.ImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.github.anselmos.popularmovies.utils.UrlBuilder.SORT_BY.*;
+import static com.github.anselmos.popularmovies.utils.UrlBuilder.SORT_BY.MOST_POPULAR;
 
 /**
  * Created by anselmos on 07.04.17.
@@ -67,6 +70,19 @@ public class ApiAccess {
         }
         return popularEntities;
     }
-    
+    public static void insertImageInView(final Context context, final ImageView imageView, final String imagePath, ImageSize imageSize) {
+        switch(imageSize){
+            case SMALL:
+                Picasso.with(context).load(new PosterUrlBuilder().getSmallImage(imagePath)).into(imageView);
+                break;
+            case MEDIUM:
+                Picasso.with(context).load(new PosterUrlBuilder().getMediumImage(imagePath)).into(imageView);
+                break;
+            case LARGE:
+                Picasso.with(context).load(new PosterUrlBuilder().getLargeImage(imagePath)).into(imageView);
+                break;
+        }
+        
+    }
 }
 

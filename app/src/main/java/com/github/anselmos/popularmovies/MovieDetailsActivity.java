@@ -1,7 +1,7 @@
 package com.github.anselmos.popularmovies;
 
-import com.github.anselmos.popularmovies.utils.PosterUrlBuilder;
-import com.squareup.picasso.Picasso;
+import com.github.anselmos.popularmovies.entity.enums.ImageSize;
+import com.github.anselmos.popularmovies.utils.ApiAccess;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +30,7 @@ public class MovieDetailsActivity extends AppCompatActivity{
         plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
     
         ImageView imageView = (ImageView) this.findViewById(R.id.image_thumbnail);
-        MoviesGridViewAdapter.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"));
+        ApiAccess.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"), ImageSize.SMALL);
         TextView vote_average = (TextView) this.findViewById(R.id.vote_average);
         vote_average.setText(extras.getString("vote_average"));
         

@@ -47,7 +47,7 @@ public class UrlBuilder {
         /**
          * Main url builder
          *
-         * @parameter sortType - uses SORT_BY enum
+         * @parameter sortType - uses SORT_BY enums
          */
         
         Uri.Builder builder = this.buildBaseUrl();
