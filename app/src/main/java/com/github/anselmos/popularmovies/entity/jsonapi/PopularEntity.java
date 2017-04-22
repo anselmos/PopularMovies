@@ -3,10 +3,16 @@ package com.github.anselmos.popularmovies.entity.jsonapi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by anselmos on 07.04.17.
  */
-public class PopularEntity {
+// TODO - check http://stackoverflow.com/questions/13786997/android-passing-object-between-activities-and-make-it-parcelable
+//TODO - check http://www.developerphil.com/parcelable-vs-serializable/
+    
+public class PopularEntity implements Parcelable {
     
     public String poster_path;
     public String adult;
@@ -23,18 +29,57 @@ public class PopularEntity {
     public boolean video;
     public double vote_average;
     
-    public PopularEntity(){
+    public PopularEntity(JSONObject object){
+        try {
+            this.setOriginal_title(object.get("original_title").toString());
+            this.setPoster_path(object.get("poster_path").toString());
+            this.setAdult(object.get("adult").toString());
+            this.setOverview(object.get("overview").toString());
+            this.setRelease_date(object.get("release_date").toString());
+            this.setVote_average(object.getDouble("vote_average"));
+        }catch(JSONException ex){}
     }
     
-    public void parseJSONObject(JSONObject object) throws JSONException {
-        
-        this.setOriginal_title(object.get("original_title").toString());
-        this.setPoster_path(object.get("poster_path").toString());
-        this.setAdult(object.get("adult").toString());
-        this.setOverview(object.get("overview").toString());
-        this.setRelease_date(object.get("release_date").toString());
-        this.setVote_average(object.getDouble("vote_average"));
+    protected PopularEntity(Parcel in) {
+        poster_path = in.readString();
+        adult = in.readString();
+        overview = in.readString();
+        release_date = in.readString();
+        genre_ids = in.readString();
+        id = in.readInt();
+        original_title = in.readString();
+        original_language = in.readString();
+        title = in.readString();
+        backdrop_path = in.readString();
+        popularity = in.readFloat();
+        vote_count = in.readInt();
+        video = in.readByte() != 0;
+        vote_average = in.readDouble();
     }
+    
+    public static final Creator<PopularEntity> CREATOR = new Creator<PopularEntity>() {
+        @Override
+        public PopularEntity createFromParcel(Parcel in) {
+            return new PopularEntity(in);
+        }
+        
+        @Override
+        public PopularEntity[] newArray(int size) {
+            return new PopularEntity[size];
+        }
+    };
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeString(this.getOriginal_title());
+        dest.writeString(this.getPoster_path());
+    }
+    
     public String toString(){
         return this.original_title + " , "+ this.release_date;
     }
@@ -42,8 +87,8 @@ public class PopularEntity {
     public String getPoster_path() {
         return poster_path;
     }
-    
-    public void setPoster_path(final String poster_path) {
+
+public void setPoster_path(final String poster_path) {
         this.poster_path = poster_path;
     }
     
@@ -150,4 +195,5 @@ public class PopularEntity {
     public void setVote_average(final double vote_average) {
         this.vote_average = vote_average;
     }
+    
 }
