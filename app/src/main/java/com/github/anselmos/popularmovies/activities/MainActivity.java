@@ -1,5 +1,8 @@
-package com.github.anselmos.popularmovies;
+package com.github.anselmos.popularmovies.activities;
 
+import com.github.anselmos.popularmovies.asynctasks.DownloadMoviesAsyncTask;
+import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
+import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 import com.github.anselmos.popularmovies.utils.UrlBuilder;

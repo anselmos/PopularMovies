@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.anselmos.popularmovies.MainActivity">
+    tools:context="com.github.anselmos.popularmovies.activities.MainActivity">
 
     <GridView
         android:id="@+id/poster_grid"

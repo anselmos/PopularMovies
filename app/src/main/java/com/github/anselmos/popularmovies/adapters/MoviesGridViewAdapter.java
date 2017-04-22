@@ -1,5 +1,6 @@
-package com.github.anselmos.popularmovies;
+package com.github.anselmos.popularmovies.adapters;
 
+import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 

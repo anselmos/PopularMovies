@@ -1,4 +1,4 @@
-package com.github.anselmos.popularmovies;
+package com.github.anselmos.popularmovies.asynctasks;
 
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.ApiAccess;

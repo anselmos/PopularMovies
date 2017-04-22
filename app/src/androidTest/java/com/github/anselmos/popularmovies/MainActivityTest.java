@@ -1,5 +1,7 @@
 package com.github.anselmos.popularmovies;
 
+import com.github.anselmos.popularmovies.activities.MainActivity;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
