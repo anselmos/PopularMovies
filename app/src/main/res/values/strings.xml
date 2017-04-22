@@ -6,4 +6,5 @@
     <string name="release_date">Release Date</string>
     <string name="top_rated_name">Top Rated</string>
     <string name="most_popular_name">Most Popular</string>
+    <string name="refresh">Refresh</string>
 </resources>

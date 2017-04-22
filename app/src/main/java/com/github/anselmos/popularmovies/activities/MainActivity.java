@@ -9,6 +9,7 @@ import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -26,13 +30,40 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<PopularEntity> movies = null;
     
     MoviesGridViewAdapter adapter = null;
-    
+    Button refreshButton;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        refreshButton = (Button) findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (isNetworkConnected()){
+                    refresh();
+                }
+            }
+        });
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        
+        if (!isNetworkConnected()){
+            showNoInternetAccess();
+        }else{
+            this.refresh();
+        }
+
+    }
+    
+    public void refresh(){
+        progressBar.setVisibility(View.GONE);
+        refreshButton.setVisibility(View.GONE);
         this.createAdapter(this.getApplicationContext(), movies);
         this.updateMovies();
+    }
+    public void showNoInternetAccess(){
+        progressBar.setVisibility(View.VISIBLE);
+        refreshButton.setVisibility(View.VISIBLE);
     }
     
     public String getApiKey() {
@@ -89,17 +120,29 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.most_popular:
-                this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
-                this.adapter.refreshEvents(this.movies);
-                return true;
-            
-            case R.id.top_rated:
-                this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
-                this.adapter.refreshEvents(this.movies);
-                return true;
+        if (!isNetworkConnected()){
+            Toast.makeText(getApplicationContext(), "Connect your device to internet", Toast.LENGTH_LONG).show();
+        }else{
+            this.refresh();
+            switch (item.getItemId()) {
+                case R.id.most_popular:
+                    this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
+                    this.adapter.refreshEvents(this.movies);
+                    return true;
+        
+                case R.id.top_rated:
+                    this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                    this.adapter.refreshEvents(this.movies);
+                    return true;
+            }
         }
+
         return true;
+    }
+    
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        
+        return cm.getActiveNetworkInfo() != null;
     }
 }
