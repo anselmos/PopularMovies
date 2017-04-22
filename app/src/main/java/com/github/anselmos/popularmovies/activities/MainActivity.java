@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,19 +50,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (isNetworkConnected()) {
-                    refresh();
-                }
-            }
-        });
         
         if (!isNetworkConnected()) {
             showNoInternetAccess();
         } else {
             this.refresh();
+        }
+    }
+    
+    @OnClick(R.id.refreshButton)
+    public void onRefreshButtonClick(){
+        if (isNetworkConnected()) {
+            refresh();
         }
     }
     
