@@ -5,8 +5,9 @@
     android:layout_height="match_parent">
 
     <fragment
+        android:name="com.github.anselmos.popularmovies.fragments.MovieListFragment"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="10dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent"
         tools:layout="@layout/movie_list_element_fragment"
         />
