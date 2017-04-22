@@ -1,10 +1,6 @@
 package com.github.anselmos.popularmovies.utils;
 
-import com.github.anselmos.popularmovies.MainActivity;
-
-import android.app.Activity;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by anselmos on 07.04.17.
