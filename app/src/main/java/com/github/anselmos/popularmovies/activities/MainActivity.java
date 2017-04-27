@@ -25,43 +25,54 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+
 public class MainActivity extends AppCompatActivity {
     
     ArrayList<PopularEntity> movies = null;
     
     MoviesGridViewAdapter adapter = null;
+    
+    @BindView(R.id.poster_grid)
+    GridView gridView;
+    
+    @BindView(R.id.refreshButton)
     Button refreshButton;
+    
+    @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        refreshButton = (Button) findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (isNetworkConnected()){
-                    refresh();
-                }
-            }
-        });
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        ButterKnife.bind(this);
         
-        if (!isNetworkConnected()){
+        if (!isNetworkConnected()) {
             showNoInternetAccess();
-        }else{
+        } else {
             this.refresh();
         }
-
     }
     
-    public void refresh(){
+    @OnClick(R.id.refreshButton)
+    public void onRefreshButtonClick(){
+        if (isNetworkConnected()) {
+            refresh();
+        }
+    }
+    
+    public void refresh() {
         progressBar.setVisibility(View.GONE);
         refreshButton.setVisibility(View.GONE);
         this.createAdapter(this.getApplicationContext(), movies);
         this.updateMovies();
     }
-    public void showNoInternetAccess(){
+    
+    public void showNoInternetAccess() {
         progressBar.setVisibility(View.VISIBLE);
         refreshButton.setVisibility(View.VISIBLE);
     }
@@ -76,20 +87,15 @@ public class MainActivity extends AppCompatActivity {
          */
         downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
         
-        GridView gridview = (GridView) this.findViewById(R.id.poster_grid);
         this.adapter = createAdapter(this.getApplicationContext(), this.movies);
-        gridview.setAdapter(this.adapter);
+        gridView.setAdapter(this.adapter);
         
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 
                 PopularEntity popularEntity = (PopularEntity) adapter.getItem(position);
                 Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
-                detailsIntent.putExtra("original_title", popularEntity.getOriginal_title());
-                detailsIntent.putExtra("image_thumbnail", popularEntity.getPoster_path());
-                detailsIntent.putExtra("plot_synopsis_overview", popularEntity.getOverview());
-                detailsIntent.putExtra("vote_average", String.valueOf(popularEntity.getVote_average()));
-                detailsIntent.putExtra("release_date", popularEntity.getRelease_date());
+                detailsIntent.putExtra("parcelable", popularEntity);
                 startActivity(detailsIntent);
             }
         });
@@ -120,23 +126,23 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isNetworkConnected()){
+        if (!isNetworkConnected()) {
             Toast.makeText(getApplicationContext(), "Connect your device to internet", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             this.refresh();
             switch (item.getItemId()) {
                 case R.id.most_popular:
                     this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
                     this.adapter.refreshEvents(this.movies);
                     return true;
-        
+                
                 case R.id.top_rated:
                     this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
                     this.adapter.refreshEvents(this.movies);
                     return true;
             }
         }
-
+        
         return true;
     }
     
