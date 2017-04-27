@@ -95,11 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 
                 PopularEntity popularEntity = (PopularEntity) adapter.getItem(position);
                 Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
-                detailsIntent.putExtra("original_title", popularEntity.getOriginal_title());
-                detailsIntent.putExtra("image_thumbnail", popularEntity.getPoster_path());
-                detailsIntent.putExtra("plot_synopsis_overview", popularEntity.getOverview());
-                detailsIntent.putExtra("vote_average", String.valueOf(popularEntity.getVote_average()));
-                detailsIntent.putExtra("release_date", popularEntity.getRelease_date());
+                detailsIntent.putExtra("parcelable", popularEntity);
                 startActivity(detailsIntent);
             }
         });

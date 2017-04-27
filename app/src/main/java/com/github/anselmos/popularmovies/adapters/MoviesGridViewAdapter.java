@@ -54,7 +54,7 @@ public class MoviesGridViewAdapter extends BaseAdapter {
         }
         ImageView imageView = new ImageView(this.mContext);
         final PopularEntity popularEntity = this.list.get(position);
-        insertImageInView(this.mContext, imageView, popularEntity.getPoster_path(), ImageSize.SMALL);
+        insertImageInView(this.mContext, imageView, popularEntity.poster_path, ImageSize.SMALL);
         return imageView;
     }
     

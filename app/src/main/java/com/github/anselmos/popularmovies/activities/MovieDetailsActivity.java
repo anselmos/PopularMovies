@@ -2,6 +2,7 @@ package com.github.anselmos.popularmovies.activities;
 
 import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
+import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 
 import android.os.Bundle;
@@ -34,16 +35,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details_activity);
         ButterKnife.bind(this);
-        Bundle extras = getIntent().getExtras();
-        this.updateMovieDetails(extras);
+        PopularEntity entity = getIntent().getParcelableExtra("parcelable");
+        System.out.println("entity!" + entity.original_title);
+        this.updateMovieDetails(entity);
     }
     
-    public void updateMovieDetails(Bundle extras) {
-        this.original_title.setText(extras.getString("original_title"));
-        this.plot_synopsis_overview.setText(extras.getString("plot_synopsis_overview"));
-        this.vote_average.setText(extras.getString("vote_average"));
-        this.release_date.setText(extras.getString("release_date"));
+    public void updateMovieDetails(PopularEntity entity) {
+        this.original_title.setText(entity.original_title);
+        this.plot_synopsis_overview.setText(entity.overview);
+        this.vote_average.setText(String.valueOf(entity.vote_average));
+        this.release_date.setText(entity.release_date);
         
-        ApiAccess.insertImageInView(this.getApplicationContext(), imageView, extras.getString("image_thumbnail"), ImageSize.MEDIUM);
+        ApiAccess.insertImageInView(this.getApplicationContext(), imageView, entity.poster_path, ImageSize.MEDIUM);
     }
 }
