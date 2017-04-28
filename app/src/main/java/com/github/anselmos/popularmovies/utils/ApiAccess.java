@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -27,23 +28,9 @@ public class ApiAccess {
     public ArrayList<PopularEntity> getMovies(String apiKey, BUILD_URL_TYPE sortBy) throws JSONException {
         String url = new UrlBuilder().build(sortBy, apiKey);
         OkHttpClient client = new OkHttpClient();
-        Response response = null;
-        try {
-            response = client.newCall(
-                    new Request.Builder().url(url).build()
-            ).execute();
-        } catch (IOException e) {
-            //e.printStackTrace();
-        }
-        
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(response.body().string());
-        } catch (JSONException e) {
-            //e.printStackTrace();
-        } catch (IOException e) {
-            //e.printStackTrace();
-        }
+        Response response = getResponse(url, client);
+    
+        JSONObject jsonObject = decodeJSONObjectFromResponse(response);
         ArrayList<PopularEntity> results = null;
         
         JSONArray arrayResults = null;
@@ -54,6 +41,32 @@ public class ApiAccess {
             e.printStackTrace();
         }
         return decodeJSONArray(arrayResults);
+    }
+    
+    @Nullable
+    public Response getResponse(final String url, final OkHttpClient client) {
+        Response response = null;
+        try {
+            response = client.newCall(
+                    new Request.Builder().url(url).build()
+            ).execute();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+        return response;
+    }
+    
+    @Nullable
+    public JSONObject decodeJSONObjectFromResponse(final Response response) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(response.body().string());
+        } catch (JSONException e) {
+            //e.printStackTrace();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+        return jsonObject;
     }
     
     public ArrayList<PopularEntity> decodeJSONArray(JSONArray array) throws JSONException {

@@ -33,25 +33,28 @@ public class UrlBuilder {
                 .appendPath(API_MOVIE);
     }
     public String build(BUILD_URL_TYPE sortType, String apiKey){
+        /**
+         * Overloads build method with default value of movieId =""
+         */
         return this.build(sortType, apiKey, "");
     }
-    public String build(BUILD_URL_TYPE sortType, String apiKey, String movieId){
+    public String build(BUILD_URL_TYPE urlType, String apiKey, String movieId){
         /**
          * Main url builder
          *
-         * @parameter sortType - uses SORT_BY enums
+         * @parameter urlType - uses BUILD_URL_TYPE enums
          */
         
         Uri.Builder builder = this.buildBaseUrl();
-        switch(sortType){
+        switch(urlType){
             case MOST_POPULAR:
             case TOP_RATED:
-                builder.appendPath(sortType.value);
+                builder.appendPath(urlType.value);
                 break;
             case TRAILER:
             case REVIEW:
                 builder.appendPath(movieId);
-                builder.appendPath(sortType.value);
+                builder.appendPath(urlType.value);
         }
         
         builder.appendQueryParameter(QUERY_API_KEY, apiKey);
