@@ -3,6 +3,7 @@ package com.github.anselmos.popularmovies.utils;
 import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -25,6 +26,17 @@ import okhttp3.Response;
  */
 public class ApiAccess {
     
+    public ArrayList<Trailer> getTrailers(String apiKey, String movieId){
+        String url = new UrlBuilder().build(BUILD_URL_TYPE.TRAILER, apiKey, movieId);
+        OkHttpClient client = new OkHttpClient();
+    
+        Response response = decodeResponse(url, client);
+        JSONObject jsonObject = decodeJSONObjectFromResponse(response);
+        //JSONArray arrayResults = decodeJSONArray(jsonObject, "results");
+        System.out.println(jsonObject);
+        ArrayList<Trailer> trailers = new ArrayList<>();
+        return trailers;
+    }
     public ArrayList<PopularEntity> getMovies(String apiKey, BUILD_URL_TYPE sortBy) throws JSONException {
         String url = new UrlBuilder().build(sortBy, apiKey);
         OkHttpClient client = new OkHttpClient();

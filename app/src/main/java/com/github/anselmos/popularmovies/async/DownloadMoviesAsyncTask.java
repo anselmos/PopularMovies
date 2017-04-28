@@ -21,6 +21,7 @@ public class DownloadMoviesAsyncTask extends AsyncTask<MoviesDoInBackgroundParam
         ArrayList<PopularEntity> movies =null;
         try {
              movies = new ApiAccess().getMovies(param.getKey(), param.getSortBy());
+            
         }catch(JSONException e){
             
         }

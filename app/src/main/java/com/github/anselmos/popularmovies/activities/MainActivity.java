@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 PopularEntity popularEntity = (PopularEntity) adapter.getItem(position);
                 Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
                 detailsIntent.putExtra("parcelable", popularEntity);
+                detailsIntent.putExtra("apiKey", getApiKey());
                 startActivity(detailsIntent);
             }
         });
