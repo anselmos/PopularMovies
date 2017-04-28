@@ -13,8 +13,6 @@ public class UrlBuilder {
     public final String API_AUTHORITY = "api.themoviedb.org";
     public final String API_VERSION = "3";
     public final String API_MOVIE = "movie";
-    public final String API_TOP_RATED= "top_rated";
-    public final String API_MOST_POPULAR = "popular";
     
     public final String QUERY_API_KEY = "api_key";
 
@@ -34,8 +32,10 @@ public class UrlBuilder {
                 .appendPath(API_VERSION)
                 .appendPath(API_MOVIE);
     }
-    
     public String build(BUILD_URL_TYPE sortType, String apiKey){
+        return this.build(sortType, apiKey, "");
+    }
+    public String build(BUILD_URL_TYPE sortType, String apiKey, String movieId){
         /**
          * Main url builder
          *
@@ -45,11 +45,13 @@ public class UrlBuilder {
         Uri.Builder builder = this.buildBaseUrl();
         switch(sortType){
             case MOST_POPULAR:
-                builder.appendPath(API_MOST_POPULAR);
-                break;
             case TOP_RATED:
-                builder.appendPath(API_TOP_RATED);
+                builder.appendPath(sortType.value);
                 break;
+            case TRAILER:
+            case REVIEW:
+                builder.appendPath(movieId);
+                builder.appendPath(sortType.value);
         }
         
         builder.appendQueryParameter(QUERY_API_KEY, apiKey);
