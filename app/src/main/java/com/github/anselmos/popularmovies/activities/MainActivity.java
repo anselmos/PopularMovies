@@ -3,6 +3,7 @@ package com.github.anselmos.popularmovies.activities;
 import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
 import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
 import com.github.anselmos.popularmovies.R;
+import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 import com.github.anselmos.popularmovies.utils.UrlBuilder;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * By default makes order by MOST POPULAR.
          */
-        downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
+        downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
         
         this.adapter = createAdapter(this.getApplicationContext(), this.movies);
         gridView.setAdapter(this.adapter);
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     
-    private void downloadMoviesList(UrlBuilder.SORT_BY sortBy) {
+    private void downloadMoviesList(BUILD_URL_TYPE sortBy) {
         MoviesDoInBackgroundParameter param = new MoviesDoInBackgroundParameter();
         param.setKey(this.getApiKey());
         param.setSortBy(sortBy);
@@ -132,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
             this.refresh();
             switch (item.getItemId()) {
                 case R.id.most_popular:
-                    this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
+                    this.downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
                     this.adapter.refreshEvents(this.movies);
                     return true;
                 
                 case R.id.top_rated:
-                    this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                    this.downloadMoviesList(BUILD_URL_TYPE.TOP_RATED);
                     this.adapter.refreshEvents(this.movies);
                     return true;
             }

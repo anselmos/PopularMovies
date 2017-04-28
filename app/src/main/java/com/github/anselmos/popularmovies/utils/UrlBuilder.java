@@ -1,5 +1,7 @@
 package com.github.anselmos.popularmovies.utils;
 
+import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
+
 import android.net.Uri;
 
 /**
@@ -15,13 +17,7 @@ public class UrlBuilder {
     public final String API_MOST_POPULAR = "popular";
     
     public final String QUERY_API_KEY = "api_key";
-    
-    
 
-    public enum SORT_BY {
-        MOST_POPULAR,
-        TOP_RATED
-    }
 
     public void UrlBuilder(){
         /**
@@ -39,7 +35,7 @@ public class UrlBuilder {
                 .appendPath(API_MOVIE);
     }
     
-    public String build(SORT_BY sortType, String apiKey){
+    public String build(BUILD_URL_TYPE sortType, String apiKey){
         /**
          * Main url builder
          *

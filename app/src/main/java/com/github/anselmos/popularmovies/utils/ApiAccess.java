@@ -1,5 +1,6 @@
 package com.github.anselmos.popularmovies.utils;
 
+import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.squareup.picasso.Picasso;
@@ -18,14 +19,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.github.anselmos.popularmovies.utils.UrlBuilder.SORT_BY.*;
-
 /**
  * Created by anselmos on 07.04.17.
  */
 public class ApiAccess {
     
-    public ArrayList<PopularEntity> getMovies(String apiKey, UrlBuilder.SORT_BY sortBy) throws JSONException {
+    public ArrayList<PopularEntity> getMovies(String apiKey, BUILD_URL_TYPE sortBy) throws JSONException {
         String url = new UrlBuilder().build(sortBy, apiKey);
         OkHttpClient client = new OkHttpClient();
         Response response = null;
