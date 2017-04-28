@@ -28,23 +28,27 @@ public class ApiAccess {
     public ArrayList<PopularEntity> getMovies(String apiKey, BUILD_URL_TYPE sortBy) throws JSONException {
         String url = new UrlBuilder().build(sortBy, apiKey);
         OkHttpClient client = new OkHttpClient();
-        Response response = getResponse(url, client);
-    
-        JSONObject jsonObject = decodeJSONObjectFromResponse(response);
-        ArrayList<PopularEntity> results = null;
         
-        JSONArray arrayResults = null;
-        try {
-            arrayResults = (JSONArray) jsonObject.get("results");
-        } catch (JSONException e) {
-            
-            e.printStackTrace();
-        }
+        Response response = decodeResponse(url, client);
+        JSONObject jsonObject = decodeJSONObjectFromResponse(response);
+        JSONArray arrayResults = decodeJSONArray(jsonObject, "results");
         return decodeJSONArray(arrayResults);
     }
     
     @Nullable
-    public Response getResponse(final String url, final OkHttpClient client) {
+    public JSONArray decodeJSONArray(final JSONObject jsonObject, String getFromJSONArray) {
+        JSONArray arrayResults = null;
+        try {
+            arrayResults = (JSONArray) jsonObject.get(getFromJSONArray);
+        } catch (JSONException e) {
+            
+            e.printStackTrace();
+        }
+        return arrayResults;
+    }
+    
+    @Nullable
+    public Response decodeResponse(final String url, final OkHttpClient client) {
         Response response = null;
         try {
             response = client.newCall(
