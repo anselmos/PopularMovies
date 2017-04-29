@@ -1,7 +1,7 @@
 package com.github.anselmos.popularmovies.activities;
 
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
+import com.github.anselmos.popularmovies.adapters.TrailersListViewAdapter;
 import com.github.anselmos.popularmovies.async.FetchReviewsAsyncTask;
 import com.github.anselmos.popularmovies.async.FetchTrailersAsyncTask;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
@@ -9,12 +9,13 @@ import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.entity.jsonapi.Review;
 import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
-import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.release_date)
     TextView release_date;
     
+    @BindView(R.id.trailers)
+    ListView trailersListView;
+    
+    TrailersListViewAdapter trailersListViewAdapter = null;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +54,24 @@ public class MovieDetailsActivity extends AppCompatActivity {
         PopularEntity entity = getIntent().getParcelableExtra("parcelable");
 
         String apiKey = getIntent().getStringExtra("apiKey");
+    
+        
         this.updateMovieDetails(entity);
         ArrayList<Trailer> trailers = null;
         ArrayList<Review> reviews = null;
-        String[] param = new String[2];
-        //TODO remove this LINKS
-        //https://developers.themoviedb.org/3/movies/get-top-rated-movies
-        //https://developers.themoviedb.org/3/movies/get-movie-videos
-        param[0] = apiKey;
-        
-        //TODO REMOVE THIS comment when assured it's working
-        //param[1] = "295693";
-        param[1] = String.valueOf(entity.id);
-        AsyncTask<String, Integer, ArrayList<Trailer>> trailerTask = new FetchTrailersAsyncTask().execute(param);
+        String[] paramTrailerTask = new String[2];
+        paramTrailerTask[0] = apiKey;
+        paramTrailerTask[1] = String.valueOf(entity.id);
+        trailers = getTrailersList(trailers, paramTrailerTask);
+        trailersListViewAdapter = new TrailersListViewAdapter(this, trailers);
+    
+        trailersListView.setAdapter(trailersListViewAdapter);
+
+    }
+    
+    private ArrayList<Trailer> getTrailersList(ArrayList<Trailer> trailers, final String[] paramTrailerTask) {
+        AsyncTask<String, Integer, ArrayList<Trailer>>
+            trailerTask = new FetchTrailersAsyncTask().execute(paramTrailerTask);
         try {
             trailers = (ArrayList<Trailer>) trailerTask.get();
         } catch (InterruptedException e) {
@@ -68,8 +79,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        
-        AsyncTask<String, Integer, ArrayList<Review>> reviewTask= new FetchReviewsAsyncTask().execute(param);
+        return trailers;
+    }
+    
+    private void getReviewsList(final String[] param) {
+        final ArrayList<Review> reviews;AsyncTask<String, Integer, ArrayList<Review>> reviewTask= new FetchReviewsAsyncTask().execute(param);
         try {
             reviews = (ArrayList<Review>) reviewTask.get();
         } catch (InterruptedException e) {
@@ -77,7 +91,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println(reviews);
     }
     
     public void updateMovieDetails(PopularEntity entity) {
