@@ -1,5 +1,8 @@
 package com.github.anselmos.popularmovies.entity.jsonapi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -32,7 +35,20 @@ public class Trailer implements Parcelable {
      }
      
      public Trailer() {}
-     
+    
+    public Trailer(JSONObject in) {
+         try {
+              this.id = in.getString("id");
+              this.iso_639_1 = in.getString("iso_639_1");
+              this.iso_3166_1 = in.getString("iso_3166_1");
+              this.key = in.getString("key");
+              this.name = in.getString("name");
+              this.site = in.getString("site");
+              this.size = in.getInt("size");
+              this.type = in.getString("type");
+         }catch(JSONException ex){}
+        
+    }
      protected Trailer(Parcel in) {
           this.id = in.readString();
           this.iso_639_1 = in.readString();

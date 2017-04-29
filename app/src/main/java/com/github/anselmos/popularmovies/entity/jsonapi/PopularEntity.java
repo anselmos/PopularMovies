@@ -67,7 +67,7 @@ public class PopularEntity implements Parcelable {
             this.overview = (object.get("overview").toString());
             this.release_date = (object.get("release_date").toString());
             this.vote_average = (object.getDouble("vote_average"));
-            //TODO read ID here!
+            this.id = object.getInt("id");
             
         }catch(JSONException ex){}
     }

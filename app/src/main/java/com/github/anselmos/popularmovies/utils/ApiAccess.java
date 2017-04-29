@@ -3,6 +3,7 @@ package com.github.anselmos.popularmovies.utils;
 import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.entity.jsonapi.Review;
 import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
 import com.squareup.picasso.Picasso;
 
@@ -26,16 +27,23 @@ import okhttp3.Response;
  */
 public class ApiAccess {
     
-    public ArrayList<Trailer> getTrailers(String apiKey, String movieId){
+    public ArrayList<Trailer> getTrailers(String apiKey, String movieId) throws JSONException {
         String url = new UrlBuilder().build(BUILD_URL_TYPE.TRAILER, apiKey, movieId);
         OkHttpClient client = new OkHttpClient();
     
         Response response = decodeResponse(url, client);
         JSONObject jsonObject = decodeJSONObjectFromResponse(response);
-        //JSONArray arrayResults = decodeJSONArray(jsonObject, "results");
-        System.out.println(jsonObject);
-        ArrayList<Trailer> trailers = new ArrayList<>();
-        return trailers;
+        JSONArray arrayResults = getJSONObject(jsonObject, "results");
+        return decodeTrailers(arrayResults);
+    }
+    public ArrayList<Review> getReviews(String apiKey, String movieId) throws JSONException {
+        String url = new UrlBuilder().build(BUILD_URL_TYPE.REVIEW, apiKey, movieId);
+        OkHttpClient client = new OkHttpClient();
+        
+        Response response = decodeResponse(url, client);
+        JSONObject jsonObject = decodeJSONObjectFromResponse(response);
+        JSONArray arrayResults = getJSONObject(jsonObject, "results");
+        return decodeReviews(arrayResults);
     }
     public ArrayList<PopularEntity> getMovies(String apiKey, BUILD_URL_TYPE sortBy) throws JSONException {
         String url = new UrlBuilder().build(sortBy, apiKey);
@@ -43,17 +51,16 @@ public class ApiAccess {
         
         Response response = decodeResponse(url, client);
         JSONObject jsonObject = decodeJSONObjectFromResponse(response);
-        JSONArray arrayResults = decodeJSONArray(jsonObject, "results");
-        return decodeJSONArray(arrayResults);
+        JSONArray arrayResults = getJSONObject(jsonObject, "results");
+        return decodePopularEntities(arrayResults);
     }
     
     @Nullable
-    public JSONArray decodeJSONArray(final JSONObject jsonObject, String getFromJSONArray) {
+    public JSONArray getJSONObject(final JSONObject jsonObject, String getFromJSONArray) {
         JSONArray arrayResults = null;
         try {
             arrayResults = (JSONArray) jsonObject.get(getFromJSONArray);
         } catch (JSONException e) {
-            
             e.printStackTrace();
         }
         return arrayResults;
@@ -85,7 +92,33 @@ public class ApiAccess {
         return jsonObject;
     }
     
-    public ArrayList<PopularEntity> decodeJSONArray(JSONArray array) throws JSONException {
+    public ArrayList<Trailer> decodeTrailers(JSONArray array) throws JSONException {
+        /**
+         * Decodes data from JSONArray to trailers
+         */
+        ArrayList<Trailer> trailers = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject arrayObject = array.getJSONObject(i);
+            Trailer trailer = new Trailer(arrayObject);
+            trailers.add(trailer);
+        }
+        return trailers;
+    }
+    
+    public ArrayList<Review> decodeReviews(JSONArray array) throws JSONException {
+        /**
+         * Decodes data from JSONArray to reviews
+         */
+        ArrayList<Review> reviews = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject arrayObject = array.getJSONObject(i);
+            Review review = new Review(arrayObject);
+            reviews.add(review);
+        }
+        return reviews;
+    }
+    
+    public ArrayList<PopularEntity> decodePopularEntities(JSONArray array) throws JSONException {
         /**
          * Decodes data from JSONArray to popularEntity
          */

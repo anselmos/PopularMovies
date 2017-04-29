@@ -2,9 +2,11 @@ package com.github.anselmos.popularmovies.activities;
 
 import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
+import com.github.anselmos.popularmovies.async.FetchReviewsAsyncTask;
 import com.github.anselmos.popularmovies.async.FetchTrailersAsyncTask;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.entity.jsonapi.Review;
 import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
@@ -48,22 +50,34 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String apiKey = getIntent().getStringExtra("apiKey");
         this.updateMovieDetails(entity);
         ArrayList<Trailer> trailers = null;
+        ArrayList<Review> reviews = null;
         String[] param = new String[2];
-        //TODO get Movie ID! /ID in TOPRATED
+        //TODO remove this LINKS
         //https://developers.themoviedb.org/3/movies/get-top-rated-movies
         //https://developers.themoviedb.org/3/movies/get-movie-videos
         param[0] = apiKey;
-        //TODO remove hardcoded from here and paste an movieId here from entity!
-        param[1] = "295693";
-        AsyncTask<String, Integer, ArrayList<Trailer>> task = new FetchTrailersAsyncTask().execute(param);
+        
+        //TODO REMOVE THIS comment when assured it's working
+        //param[1] = "295693";
+        param[1] = String.valueOf(entity.id);
+        AsyncTask<String, Integer, ArrayList<Trailer>> trailerTask = new FetchTrailersAsyncTask().execute(param);
         try {
-            trailers = (ArrayList<Trailer>) task.get();
+            trailers = (ArrayList<Trailer>) trailerTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println(trailers);
+        
+        AsyncTask<String, Integer, ArrayList<Review>> reviewTask= new FetchReviewsAsyncTask().execute(param);
+        try {
+            reviews = (ArrayList<Review>) reviewTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println(reviews);
     }
     
     public void updateMovieDetails(PopularEntity entity) {
