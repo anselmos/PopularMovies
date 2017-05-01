@@ -10,12 +10,16 @@ import com.github.anselmos.popularmovies.entity.jsonapi.Review;
 import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,8 +45,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.release_date)
     TextView release_date;
     
-    @BindView(R.id.trailers)
-    ListView trailersListView;
+    @BindView(R.id.trailers_linearlayout)
+    LinearLayout trailers_linear_layout;
     
     TrailersListViewAdapter trailersListViewAdapter = null;
     
@@ -63,10 +67,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         paramTrailerTask[0] = apiKey;
         paramTrailerTask[1] = String.valueOf(entity.id);
         trailers = getTrailersList(trailers, paramTrailerTask);
-        trailersListViewAdapter = new TrailersListViewAdapter(this, trailers);
-    
-        trailersListView.setAdapter(trailersListViewAdapter);
-
+        addTrailersToDetailsView(trailers, this);
     }
     
     private ArrayList<Trailer> getTrailersList(ArrayList<Trailer> trailers, final String[] paramTrailerTask) {
@@ -103,5 +104,39 @@ public class MovieDetailsActivity extends AppCompatActivity {
         
     }
     
+    public void addTrailersToDetailsView(ArrayList<Trailer> trailers, Context context){
+        for(Trailer trailer: trailers){
+            TextView trailerTextView = new TextView(this);
+            trailerTextView.setText(trailer.name);
+            
+            
+            this.trailers_linear_layout.addView(addOnClickListenerForTrailer(trailerTextView, trailer, context));
+        }
+
+    }
     
+    public TextView addOnClickListenerForTrailer(final TextView trailerTextView, final Trailer trailer, final Context context){
+        trailerTextView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        if (trailer.isYoutubeSite()){
+                            watchYoutubeVideo(trailer.key);
+                        }
+                    }
+                }
+        );
+        return trailerTextView;
+    }
+    
+    public void watchYoutubeVideo(String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
+    }
 }

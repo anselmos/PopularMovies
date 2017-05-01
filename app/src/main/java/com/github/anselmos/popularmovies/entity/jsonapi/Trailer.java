@@ -10,6 +10,8 @@ import android.os.Parcelable;
  * Created by anselmos on 28.04.17.
  */
 public class Trailer implements Parcelable {
+     public static String YOUTUBE_SITE = "YouTube";
+     public static String YOUTUBE_WATCH = "https://youtube.com/watch?v=";
      public String id;
      public String iso_639_1;
      public String iso_3166_1;
@@ -19,6 +21,23 @@ public class Trailer implements Parcelable {
      public int size;
      public String type;
      
+     @Override
+     public String toString() {
+          return "Trailer{" +
+                  "id='" + id + '\'' +
+                  ", iso_639_1='" + iso_639_1 + '\'' +
+                  ", iso_3166_1='" + iso_3166_1 + '\'' +
+                  ", key='" + key + '\'' +
+                  ", name='" + name + '\'' +
+                  ", site='" + site + '\'' +
+                  ", size=" + size +
+                  ", type='" + type + '\'' +
+                  '}';
+     }
+     
+     public boolean isYoutubeSite(){
+          return site.equals(YOUTUBE_SITE);
+     }
      @Override
      public int describeContents() { return 0; }
      

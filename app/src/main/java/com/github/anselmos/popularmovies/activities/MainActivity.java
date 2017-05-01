@@ -8,9 +8,11 @@ import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
