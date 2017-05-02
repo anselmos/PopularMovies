@@ -13,11 +13,14 @@ import com.github.anselmos.popularmovies.utils.ApiAccess;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,7 +51,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.trailers_linearlayout)
     LinearLayout trailers_linear_layout;
     
-    TrailersListViewAdapter trailersListViewAdapter = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +105,24 @@ public class MovieDetailsActivity extends AppCompatActivity {
         ApiAccess.insertImageInView(this.getApplicationContext(), imageView, entity.poster_path, ImageSize.MEDIUM);
         
     }
-    
+    public Button getTrailerTextView(Trailer trailer){
+        Button trailerTextView = new Button(this);
+        trailerTextView.setText(trailer.name);
+        //trailerTextView.setTypeface(Typeface.MONOSPACE);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(10,8,8,8);
+        trailerTextView.setLayoutParams(layoutParams);
+        return trailerTextView;
+    }
     public void addTrailersToDetailsView(ArrayList<Trailer> trailers, Context context){
         for(Trailer trailer: trailers){
-            TextView trailerTextView = new TextView(this);
-            trailerTextView.setText(trailer.name);
-            
-            
-            this.trailers_linear_layout.addView(addOnClickListenerForTrailer(trailerTextView, trailer, context));
+
+            this.trailers_linear_layout.addView(addOnClickListenerForTrailer(getTrailerTextView(trailer), trailer, context));
         }
 
     }
     
-    public TextView addOnClickListenerForTrailer(final TextView trailerTextView, final Trailer trailer, final Context context){
+    public Button addOnClickListenerForTrailer(final Button trailerTextView, final Trailer trailer, final Context context){
         trailerTextView.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
