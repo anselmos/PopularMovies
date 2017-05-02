@@ -1,7 +1,6 @@
 package com.github.anselmos.popularmovies.activities;
 
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.adapters.TrailersListViewAdapter;
 import com.github.anselmos.popularmovies.async.FetchReviewsAsyncTask;
 import com.github.anselmos.popularmovies.async.FetchTrailersAsyncTask;
 import com.github.anselmos.popularmovies.entity.enums.ImageSize;
@@ -13,10 +12,10 @@ import com.github.anselmos.popularmovies.utils.ApiAccess;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +50,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.trailers_linearlayout)
     LinearLayout trailers_linear_layout;
     
+    @BindView(R.id.reviews_linear_layout)
+    LinearLayout reviews_linear_layout;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +65,32 @@ public class MovieDetailsActivity extends AppCompatActivity {
         
         this.updateMovieDetails(entity);
         ArrayList<Trailer> trailers = null;
-        ArrayList<Review> reviews = null;
         String[] paramTrailerTask = new String[2];
         paramTrailerTask[0] = apiKey;
         paramTrailerTask[1] = String.valueOf(entity.id);
         trailers = getTrailersList(trailers, paramTrailerTask);
         addTrailersToDetailsView(trailers, this);
+        ArrayList<Review> reviews = getReviewsList(paramTrailerTask);
+        for(Review review: reviews){
+            TextView reviewTextView = new TextView(this);
+            LinearLayout.LayoutParams layoutParams = getLayoutParams();
+            reviewTextView.setLayoutParams(layoutParams);
+            reviewTextView.setText(review.content);
+            reviews_linear_layout.addView(reviewTextView);
+        }
+        
+        
+    }
+    
+    @NonNull
+    private LinearLayout.LayoutParams getLayoutParams() {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(10,8,8,8);
+        return layoutParams;
     }
     
     private ArrayList<Trailer> getTrailersList(ArrayList<Trailer> trailers, final String[] paramTrailerTask) {
-        AsyncTask<String, Integer, ArrayList<Trailer>>
-            trailerTask = new FetchTrailersAsyncTask().execute(paramTrailerTask);
+        AsyncTask<String, Integer, ArrayList<Trailer>> trailerTask = new FetchTrailersAsyncTask().execute(paramTrailerTask);
         try {
             trailers = (ArrayList<Trailer>) trailerTask.get();
         } catch (InterruptedException e) {
@@ -85,8 +101,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         return trailers;
     }
     
-    private void getReviewsList(final String[] param) {
-        final ArrayList<Review> reviews;AsyncTask<String, Integer, ArrayList<Review>> reviewTask= new FetchReviewsAsyncTask().execute(param);
+    private ArrayList<Review> getReviewsList(final String[] param) {
+        ArrayList<Review> reviews = null;
+        AsyncTask<String, Integer, ArrayList<Review>> reviewTask = new FetchReviewsAsyncTask().execute(param);
         try {
             reviews = (ArrayList<Review>) reviewTask.get();
         } catch (InterruptedException e) {
@@ -94,6 +111,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return reviews;
     }
     
     public void updateMovieDetails(PopularEntity entity) {
@@ -105,19 +123,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
         ApiAccess.insertImageInView(this.getApplicationContext(), imageView, entity.poster_path, ImageSize.MEDIUM);
         
     }
-    public Button getTrailerTextView(Trailer trailer){
+    
+    public Button getTrailerButton(Trailer trailer){
         Button trailerTextView = new Button(this);
         trailerTextView.setText(trailer.name);
-        //trailerTextView.setTypeface(Typeface.MONOSPACE);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(10,8,8,8);
-        trailerTextView.setLayoutParams(layoutParams);
+        trailerTextView.setLayoutParams(getLayoutParams());
         return trailerTextView;
     }
+    
     public void addTrailersToDetailsView(ArrayList<Trailer> trailers, Context context){
         for(Trailer trailer: trailers){
 
-            this.trailers_linear_layout.addView(addOnClickListenerForTrailer(getTrailerTextView(trailer), trailer, context));
+            this.trailers_linear_layout.addView(addOnClickListenerForTrailer(getTrailerButton(trailer), trailer, context));
         }
 
     }
@@ -146,4 +163,5 @@ public class MovieDetailsActivity extends AppCompatActivity {
             startActivity(webIntent);
         }
     }
+    
 }
