@@ -1,18 +1,15 @@
 package com.github.anselmos.popularmovies.activities;
 
-import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
-import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
 import com.github.anselmos.popularmovies.R;
+import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
+import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
 import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
 import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
-import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity {
     
