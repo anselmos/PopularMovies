@@ -1,10 +1,10 @@
 package com.github.anselmos.popularmovies.utils;
 
-import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
-import com.github.anselmos.popularmovies.entity.enums.ImageSize;
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
-import com.github.anselmos.popularmovies.entity.jsonapi.Review;
-import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
+import com.github.anselmos.popularmovies.models.enums.ImageSize;
+import com.github.anselmos.popularmovies.models.PopularEntity;
+import com.github.anselmos.popularmovies.models.Review;
+import com.github.anselmos.popularmovies.models.Trailer;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import io.realm.Realm;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -100,6 +101,7 @@ public class ApiAccess {
         for (int i = 0; i < array.length(); i++) {
             JSONObject arrayObject = array.getJSONObject(i);
             Trailer trailer = new Trailer(arrayObject);
+
             trailers.add(trailer);
         }
         return trailers;
@@ -125,7 +127,11 @@ public class ApiAccess {
         ArrayList<PopularEntity> popularEntities = new ArrayList<PopularEntity>();
         for (int i = 0; i < array.length(); i++) {
             JSONObject arrayObject = array.getJSONObject(i);
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
             PopularEntity movie = new PopularEntity(arrayObject);
+            realm.copyToRealm(movie);
+            realm.commitTransaction();
             popularEntities.add(movie);
         }
         return popularEntities;

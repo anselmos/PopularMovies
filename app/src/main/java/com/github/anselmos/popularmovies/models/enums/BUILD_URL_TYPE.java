@@ -1,4 +1,4 @@
-package com.github.anselmos.popularmovies.entity.enums;
+package com.github.anselmos.popularmovies.models.enums;
 
 /**
  * Created by anselmos on 28.04.17.

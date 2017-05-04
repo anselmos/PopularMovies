@@ -1,6 +1,6 @@
 package com.github.anselmos.popularmovies.async;
 
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.models.PopularEntity;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 

@@ -1,6 +1,6 @@
 package com.github.anselmos.popularmovies.async;
 
-import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
+import com.github.anselmos.popularmovies.models.Trailer;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 
 import org.json.JSONException;

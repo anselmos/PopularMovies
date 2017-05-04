@@ -3,10 +3,10 @@ package com.github.anselmos.popularmovies.activities;
 import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.async.FetchReviewsAsyncTask;
 import com.github.anselmos.popularmovies.async.FetchTrailersAsyncTask;
-import com.github.anselmos.popularmovies.entity.enums.ImageSize;
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
-import com.github.anselmos.popularmovies.entity.jsonapi.Review;
-import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
+import com.github.anselmos.popularmovies.models.enums.ImageSize;
+import com.github.anselmos.popularmovies.models.PopularEntity;
+import com.github.anselmos.popularmovies.models.Review;
+import com.github.anselmos.popularmovies.models.Trailer;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 
 import android.content.ActivityNotFoundException;

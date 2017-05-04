@@ -1,8 +1,8 @@
 package com.github.anselmos.popularmovies.adapters;
 
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.entity.enums.ImageSize;
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.models.enums.ImageSize;
+import com.github.anselmos.popularmovies.models.PopularEntity;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -3,8 +3,8 @@ package com.github.anselmos.popularmovies.activities;
 import com.github.anselmos.popularmovies.R;
 import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
 import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
-import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
+import com.github.anselmos.popularmovies.models.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 
 import android.content.Context;
@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -134,16 +135,26 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Connect your device to internet", Toast.LENGTH_LONG).show();
         } else {
             this.refresh();
+            
             switch (item.getItemId()) {
                 case R.id.most_popular:
+                    this.movies.clear();
                     this.downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
                     this.adapter.refreshEvents(this.movies);
-                    return true;
+                    break;
                 
                 case R.id.top_rated:
+                    this.movies.clear();
                     this.downloadMoviesList(BUILD_URL_TYPE.TOP_RATED);
                     this.adapter.refreshEvents(this.movies);
-                    return true;
+                    break;
+                case R.id.user_favourites:
+                    Realm realm = Realm.getDefaultInstance();
+                    Toast.makeText(getApplicationContext(), String.valueOf(realm.where(PopularEntity.class).count()), Toast.LENGTH_SHORT).show();
+                    realm.beginTransaction();
+                    realm.deleteAll();
+                    realm.commitTransaction();
+                    break;
             }
         }
         

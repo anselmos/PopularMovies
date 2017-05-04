@@ -1,10 +1,12 @@
-package com.github.anselmos.popularmovies.entity.jsonapi;
+package com.github.anselmos.popularmovies.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import io.realm.RealmObject;
 
 /**
  * Created by anselmos on 28.04.17.

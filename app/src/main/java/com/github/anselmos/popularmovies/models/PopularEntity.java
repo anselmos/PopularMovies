@@ -1,12 +1,14 @@
-package com.github.anselmos.popularmovies.entity.jsonapi;
+package com.github.anselmos.popularmovies.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-    
-public class PopularEntity implements Parcelable {
+
+import io.realm.RealmObject;
+
+public class PopularEntity  extends RealmObject implements Parcelable{
     
     public String poster_path;
     

@@ -1,4 +1,4 @@
-package com.github.anselmos.popularmovies.entity.jsonapi;
+package com.github.anselmos.popularmovies.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

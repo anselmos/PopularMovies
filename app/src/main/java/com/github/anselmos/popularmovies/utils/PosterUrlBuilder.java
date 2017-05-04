@@ -1,6 +1,6 @@
 package com.github.anselmos.popularmovies.utils;
 
-import com.github.anselmos.popularmovies.entity.enums.ImageSize;
+import com.github.anselmos.popularmovies.models.enums.ImageSize;
 
 /**
  * Created by anselmos on 07.04.17.

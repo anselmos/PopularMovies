@@ -1,7 +1,7 @@
 package com.github.anselmos.popularmovies.adapters;
 
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.entity.jsonapi.Trailer;
+import com.github.anselmos.popularmovies.models.Trailer;
 
 import android.content.Context;
 import android.view.LayoutInflater;

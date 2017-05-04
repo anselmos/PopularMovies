@@ -1,6 +1,6 @@
 package com.github.anselmos.popularmovies.utils;
 
-import com.github.anselmos.popularmovies.entity.enums.BUILD_URL_TYPE;
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
 
 /**
  * Created by anselmos on 21.04.17.
