@@ -35,10 +35,6 @@ import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     
-    //TODO https://developer.android.com/guide/components/activities/activity-lifecycle.html
-    // TODO https://docs.google.com/document/d/1ZlN1fUsCSKuInLECcJkslIqvpKlP7jWL2TP9m6UiA6I/pub?embedded=true#h.7sxo8jefdfll
-    // TODO https://classroom.udacity.com/nanodegrees/nd818/parts/18ccf60f-3c44-46a8-8e73-5a7798c905d3/modules/3124c543-548a-4e70-a0d2-047c9e5af785/lessons/4324689102239847/concepts/42741746260923
-    
     ArrayList<PopularEntity> movies = null;
     
     MoviesGridViewAdapter adapter = null;
