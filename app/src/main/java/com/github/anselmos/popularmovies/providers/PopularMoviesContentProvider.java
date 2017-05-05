@@ -26,6 +26,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
     static final String _ID = "_id";
     
     public static final String MOVIE_TITLE = "title";
+    public static final String MOVIE_ID = "movie_id";
     static final int MOVIES = 1;
     private static HashMap<String, String> MOVIES_PROJECTION_MAP;
     static final UriMatcher uriMatcher ;
@@ -41,7 +42,8 @@ public class PopularMoviesContentProvider extends ContentProvider {
     static final String CREATE_DB_TABLE =
             " CREATE TABLE " + MOVIES_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            " title TEXT not NULL);";
+            " title TEXT not NULL," +
+            " movie_id INTEGER not NULL);";
     //DB HELPERS:
     private static class DatabaseHelper extends SQLiteOpenHelper{
         DatabaseHelper(Context context){

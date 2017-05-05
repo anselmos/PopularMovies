@@ -107,6 +107,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     realmInstance.commitTransaction();
                     ContentValues values = new ContentValues();
                     values.put(PopularMoviesContentProvider.MOVIE_TITLE, entity.original_title);
+                    values.put(PopularMoviesContentProvider.MOVIE_ID, entity.id);
                     getContentResolver().insert(PopularMoviesContentProvider.CONTENT_URI, values);
                     
                     Toast.makeText(getApplicationContext(), "RatingBar" + String.valueOf(rating), Toast.LENGTH_LONG).show();
