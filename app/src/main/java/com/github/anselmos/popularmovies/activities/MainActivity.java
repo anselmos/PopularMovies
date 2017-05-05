@@ -9,6 +9,7 @@ import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     
     MoviesGridViewAdapter adapter = null;
     
+    SharedPreferences moviesListPreferences;
+    static final String LIST_PREFS_NAME = "MoviesList";
+    static final String LIST_PREFS_SORT_NAME = "SORT";
+    
     @BindView(R.id.poster_grid)
     GridView gridView;
     
@@ -51,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        moviesListPreferences = this.getSharedPreferences(LIST_PREFS_NAME, Context.MODE_PRIVATE);
+        
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         
@@ -85,10 +93,13 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void updateMovies() {
-        /**
-         * By default makes order by MOST POPULAR.
-         */
-        downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
+        String string_value_build_type = moviesListPreferences.getString(LIST_PREFS_SORT_NAME, BUILD_URL_TYPE.MOST_POPULAR.value);
+        BUILD_URL_TYPE url_build_type = null;
+        if(string_value_build_type == BUILD_URL_TYPE.MOST_POPULAR.value) url_build_type = BUILD_URL_TYPE.MOST_POPULAR;
+        else if(string_value_build_type == BUILD_URL_TYPE.TOP_RATED.value) url_build_type = BUILD_URL_TYPE.TOP_RATED;
+        else if(string_value_build_type == BUILD_URL_TYPE.FAVOURITES_USER.value) url_build_type = BUILD_URL_TYPE.FAVOURITES_USER;
+
+        downloadMoviesList(url_build_type);
         
         this.adapter = createAdapter(this.getApplicationContext(), this.movies);
         gridView.setAdapter(this.adapter);
@@ -106,17 +117,23 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void downloadMoviesList(BUILD_URL_TYPE sortBy) {
-        MoviesDoInBackgroundParameter param = new MoviesDoInBackgroundParameter();
-        param.setKey(this.getApiKey());
-        param.setSortBy(sortBy);
-        AsyncTask<MoviesDoInBackgroundParameter, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(param);
-        try {
-            this.movies = ((ArrayList<PopularEntity>) task.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(sortBy.equals(BUILD_URL_TYPE.FAVOURITES_USER)){
+            Realm realm = Realm.getDefaultInstance();
+            this.movies = new ArrayList<PopularEntity>(realm.where(PopularEntity.class).findAllSorted("user_vote"));
+        }else{
+            MoviesDoInBackgroundParameter param = new MoviesDoInBackgroundParameter();
+            param.setKey(this.getApiKey());
+            param.setSortBy(sortBy);
+            AsyncTask<MoviesDoInBackgroundParameter, Integer, ArrayList<PopularEntity>> task = new DownloadMoviesAsyncTask().execute(param);
+            try {
+                this.movies = ((ArrayList<PopularEntity>) task.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
+
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,24 +151,30 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Connect your device to internet", Toast.LENGTH_LONG).show();
         } else {
             this.refresh();
-            
+            SharedPreferences.Editor edit = moviesListPreferences.edit();
+
             switch (item.getItemId()) {
                 case R.id.most_popular:
                     this.movies.clear();
                     this.downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
+                    edit.putString(LIST_PREFS_SORT_NAME, BUILD_URL_TYPE.MOST_POPULAR.value);
+                    edit.apply();
                     this.adapter.refreshEvents(this.movies);
                     break;
                 
                 case R.id.top_rated:
                     this.movies.clear();
                     this.downloadMoviesList(BUILD_URL_TYPE.TOP_RATED);
+                    edit.putString(LIST_PREFS_SORT_NAME, BUILD_URL_TYPE.TOP_RATED.value);
+                    edit.apply();
                     this.adapter.refreshEvents(this.movies);
                     break;
                 case R.id.user_favourites:
                     this.movies.clear();
-                    Realm realm = Realm.getDefaultInstance();
-                    RealmResults<PopularEntity> favourites = realm.where(PopularEntity.class).findAllSorted("user_vote");
-                    this.adapter.refreshEvents(favourites);
+                    this.downloadMoviesList(BUILD_URL_TYPE.FAVOURITES_USER);
+                    edit.putString(LIST_PREFS_SORT_NAME, BUILD_URL_TYPE.FAVOURITES_USER.value);
+                    edit.apply();
+                    this.adapter.refreshEvents(this.movies);
                     break;
             }
         }

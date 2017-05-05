@@ -7,6 +7,7 @@ public enum BUILD_URL_TYPE {
     
     MOST_POPULAR("popular"),
     TOP_RATED("top_rated"),
+    FAVOURITES_USER("not_api_internal_user_favourites"),
     TRAILER("videos"),
     REVIEW("reviews");
     
