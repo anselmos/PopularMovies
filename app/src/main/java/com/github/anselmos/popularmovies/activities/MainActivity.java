@@ -29,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -149,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
                     this.adapter.refreshEvents(this.movies);
                     break;
                 case R.id.user_favourites:
+                    this.movies.clear();
                     Realm realm = Realm.getDefaultInstance();
-                    Toast.makeText(getApplicationContext(), String.valueOf(realm.where(PopularEntity.class).count()), Toast.LENGTH_SHORT).show();
+                    RealmResults<PopularEntity> favourites = realm.where(PopularEntity.class).findAll();
+                    this.adapter.refreshEvents(favourites);
                     break;
             }
         }
