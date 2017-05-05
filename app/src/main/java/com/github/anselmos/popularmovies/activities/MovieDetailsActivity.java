@@ -87,9 +87,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
             reviewTextView.setText(review.content);
             reviews_linear_layout.addView(reviewTextView);
         }
-        //TODO Add user rating to be visible! if user added his rating for movie!
-        //GET this from REALM!
-        //bar.setRating();
+        Realm realmInstance = Realm.getDefaultInstance();
+        PopularEntity movieInFavourites = realmInstance.where(PopularEntity.class).equalTo("id", entity.id).findFirst();
+        if(movieInFavourites != null){
+            bar.setRating(movieInFavourites.getUser_vote());
+        }
+        
         bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
