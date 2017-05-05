@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MovieDetailsActivity extends AppCompatActivity {
     
@@ -65,7 +67,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details_activity);
         ButterKnife.bind(this);
-        PopularEntity entity = getIntent().getParcelableExtra("parcelable");
+        final PopularEntity entity = getIntent().getParcelableExtra("parcelable");
 
         String apiKey = getIntent().getStringExtra("apiKey");
     
@@ -85,13 +87,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
             reviewTextView.setText(review.content);
             reviews_linear_layout.addView(reviewTextView);
         }
+        //TODO Add user rating to be visible! if user added his rating for movie!
+        //GET this from REALM!
+        //bar.setRating();
         bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
-                //TODO put here REALM and adding/removing element.
-                // If rating==0 then remove element.
-                // Check if element exists in REALM!
-                Toast.makeText(getApplicationContext(), "RatingBar" + String.valueOf(rating), Toast.LENGTH_LONG).show();
+                if(rating != 0.0){
+                    entity.setUser_vote(rating);
+                    
+                    Realm realmInstance = Realm.getDefaultInstance();
+                    realmInstance.beginTransaction();
+                    realmInstance.copyToRealmOrUpdate(entity);
+                    realmInstance.commitTransaction();
+                    Toast.makeText(getApplicationContext(), "RatingBar" + String.valueOf(rating), Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

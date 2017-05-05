@@ -151,9 +151,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.user_favourites:
                     Realm realm = Realm.getDefaultInstance();
                     Toast.makeText(getApplicationContext(), String.valueOf(realm.where(PopularEntity.class).count()), Toast.LENGTH_SHORT).show();
-                    realm.beginTransaction();
-                    realm.deleteAll();
-                    realm.commitTransaction();
                     break;
             }
         }

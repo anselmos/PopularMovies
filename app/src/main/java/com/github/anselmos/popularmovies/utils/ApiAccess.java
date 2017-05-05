@@ -127,11 +127,7 @@ public class ApiAccess {
         ArrayList<PopularEntity> popularEntities = new ArrayList<PopularEntity>();
         for (int i = 0; i < array.length(); i++) {
             JSONObject arrayObject = array.getJSONObject(i);
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
             PopularEntity movie = new PopularEntity(arrayObject);
-            realm.copyToRealm(movie);
-            realm.commitTransaction();
             popularEntities.add(movie);
         }
         return popularEntities;

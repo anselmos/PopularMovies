@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class PopularEntity  extends RealmObject implements Parcelable{
     
@@ -20,6 +21,7 @@ public class PopularEntity  extends RealmObject implements Parcelable{
     
     public String genre_ids;
     
+    @PrimaryKey
     public int id;
     
     public String original_title;
@@ -37,6 +39,17 @@ public class PopularEntity  extends RealmObject implements Parcelable{
     public boolean video;
     
     public double vote_average;
+    //Additional user vote not included in API!
+    public float user_vote = 0;
+    
+    public float getUser_vote() {
+        return user_vote;
+    }
+    
+    public void setUser_vote(final float user_vote) {
+        this.user_vote = user_vote;
+    }
+    
     
     @Override
     public int describeContents() { return 0; }
