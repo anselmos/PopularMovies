@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".activities.MovieDetailsActivity">
             </activity>
+        <provider android:name=".providers.PopularMoviesContentProvider"
+            android:authorities="com.github.anselmos.popularmovies"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

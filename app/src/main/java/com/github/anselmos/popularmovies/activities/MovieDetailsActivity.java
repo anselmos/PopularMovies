@@ -7,9 +7,11 @@ import com.github.anselmos.popularmovies.models.enums.ImageSize;
 import com.github.anselmos.popularmovies.models.PopularEntity;
 import com.github.anselmos.popularmovies.models.Review;
 import com.github.anselmos.popularmovies.models.Trailer;
+import com.github.anselmos.popularmovies.providers.PopularMoviesContentProvider;
 import com.github.anselmos.popularmovies.utils.ApiAccess;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -103,6 +105,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     realmInstance.beginTransaction();
                     realmInstance.copyToRealmOrUpdate(entity);
                     realmInstance.commitTransaction();
+                    ContentValues values = new ContentValues();
+                    values.put(PopularMoviesContentProvider.MOVIE_TITLE, entity.original_title);
+                    values.put(PopularMoviesContentProvider.MOVIE_ID, entity.id);
+                    getContentResolver().insert(PopularMoviesContentProvider.CONTENT_URI, values);
+                    
                     Toast.makeText(getApplicationContext(), "RatingBar" + String.valueOf(rating), Toast.LENGTH_LONG).show();
                 }
 
