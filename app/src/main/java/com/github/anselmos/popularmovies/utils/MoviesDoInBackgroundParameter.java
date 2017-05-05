@@ -1,5 +1,7 @@
 package com.github.anselmos.popularmovies.utils;
 
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
+
 /**
  * Created by anselmos on 21.04.17.
  */
@@ -7,7 +9,7 @@ public class MoviesDoInBackgroundParameter {
     
     String key;
     
-    UrlBuilder.SORT_BY sortBy;
+    BUILD_URL_TYPE sortBy;
     
     public String getKey() {
         return key;
@@ -17,11 +19,11 @@ public class MoviesDoInBackgroundParameter {
         this.key = key;
     }
     
-    public UrlBuilder.SORT_BY getSortBy() {
+    public BUILD_URL_TYPE getSortBy() {
         return sortBy;
     }
     
-    public void setSortBy(final UrlBuilder.SORT_BY sortBy) {
+    public void setSortBy(final BUILD_URL_TYPE sortBy) {
         this.sortBy = sortBy;
     }
 }

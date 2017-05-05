@@ -1,5 +1,7 @@
 package com.github.anselmos.popularmovies.utils;
 
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
+
 import android.net.Uri;
 
 /**
@@ -11,17 +13,9 @@ public class UrlBuilder {
     public final String API_AUTHORITY = "api.themoviedb.org";
     public final String API_VERSION = "3";
     public final String API_MOVIE = "movie";
-    public final String API_TOP_RATED= "top_rated";
-    public final String API_MOST_POPULAR = "popular";
     
     public final String QUERY_API_KEY = "api_key";
-    
-    
 
-    public enum SORT_BY {
-        MOST_POPULAR,
-        TOP_RATED
-    }
 
     public void UrlBuilder(){
         /**
@@ -38,22 +32,29 @@ public class UrlBuilder {
                 .appendPath(API_VERSION)
                 .appendPath(API_MOVIE);
     }
-    
-    public String build(SORT_BY sortType, String apiKey){
+    public String build(BUILD_URL_TYPE sortType, String apiKey){
+        /**
+         * Overloads build method with default value of movieId =""
+         */
+        return this.build(sortType, apiKey, "");
+    }
+    public String build(BUILD_URL_TYPE urlType, String apiKey, String movieId){
         /**
          * Main url builder
          *
-         * @parameter sortType - uses SORT_BY enums
+         * @parameter urlType - uses BUILD_URL_TYPE enums
          */
         
         Uri.Builder builder = this.buildBaseUrl();
-        switch(sortType){
+        switch(urlType){
             case MOST_POPULAR:
-                builder.appendPath(API_MOST_POPULAR);
-                break;
             case TOP_RATED:
-                builder.appendPath(API_TOP_RATED);
+                builder.appendPath(urlType.value);
                 break;
+            case TRAILER:
+            case REVIEW:
+                builder.appendPath(movieId);
+                builder.appendPath(urlType.value);
         }
         
         builder.appendQueryParameter(QUERY_API_KEY, apiKey);

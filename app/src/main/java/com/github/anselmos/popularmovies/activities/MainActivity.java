@@ -1,11 +1,11 @@
 package com.github.anselmos.popularmovies.activities;
 
-import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
-import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.entity.jsonapi.PopularEntity;
+import com.github.anselmos.popularmovies.adapters.MoviesGridViewAdapter;
+import com.github.anselmos.popularmovies.async.DownloadMoviesAsyncTask;
+import com.github.anselmos.popularmovies.models.enums.BUILD_URL_TYPE;
+import com.github.anselmos.popularmovies.models.PopularEntity;
 import com.github.anselmos.popularmovies.utils.MoviesDoInBackgroundParameter;
-import com.github.anselmos.popularmovies.utils.UrlBuilder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,14 +23,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
+    
+    //TODO https://developer.android.com/guide/components/activities/activity-lifecycle.html
+    // TODO https://docs.google.com/document/d/1ZlN1fUsCSKuInLECcJkslIqvpKlP7jWL2TP9m6UiA6I/pub?embedded=true#h.7sxo8jefdfll
+    // TODO https://classroom.udacity.com/nanodegrees/nd818/parts/18ccf60f-3c44-46a8-8e73-5a7798c905d3/modules/3124c543-548a-4e70-a0d2-047c9e5af785/lessons/4324689102239847/concepts/42741746260923
     
     ArrayList<PopularEntity> movies = null;
     
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * By default makes order by MOST POPULAR.
          */
-        downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
+        downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
         
         this.adapter = createAdapter(this.getApplicationContext(), this.movies);
         gridView.setAdapter(this.adapter);
@@ -96,12 +103,13 @@ public class MainActivity extends AppCompatActivity {
                 PopularEntity popularEntity = (PopularEntity) adapter.getItem(position);
                 Intent detailsIntent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
                 detailsIntent.putExtra("parcelable", popularEntity);
+                detailsIntent.putExtra("apiKey", getApiKey());
                 startActivity(detailsIntent);
             }
         });
     }
     
-    private void downloadMoviesList(UrlBuilder.SORT_BY sortBy) {
+    private void downloadMoviesList(BUILD_URL_TYPE sortBy) {
         MoviesDoInBackgroundParameter param = new MoviesDoInBackgroundParameter();
         param.setKey(this.getApiKey());
         param.setSortBy(sortBy);
@@ -130,16 +138,25 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Connect your device to internet", Toast.LENGTH_LONG).show();
         } else {
             this.refresh();
+            
             switch (item.getItemId()) {
                 case R.id.most_popular:
-                    this.downloadMoviesList(UrlBuilder.SORT_BY.MOST_POPULAR);
+                    this.movies.clear();
+                    this.downloadMoviesList(BUILD_URL_TYPE.MOST_POPULAR);
                     this.adapter.refreshEvents(this.movies);
-                    return true;
+                    break;
                 
                 case R.id.top_rated:
-                    this.downloadMoviesList(UrlBuilder.SORT_BY.TOP_RATED);
+                    this.movies.clear();
+                    this.downloadMoviesList(BUILD_URL_TYPE.TOP_RATED);
                     this.adapter.refreshEvents(this.movies);
-                    return true;
+                    break;
+                case R.id.user_favourites:
+                    this.movies.clear();
+                    Realm realm = Realm.getDefaultInstance();
+                    RealmResults<PopularEntity> favourites = realm.where(PopularEntity.class).findAllSorted("user_vote");
+                    this.adapter.refreshEvents(favourites);
+                    break;
             }
         }
         

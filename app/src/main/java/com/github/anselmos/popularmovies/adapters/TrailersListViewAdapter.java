@@ -1,32 +1,28 @@
 package com.github.anselmos.popularmovies.adapters;
 
 import com.github.anselmos.popularmovies.R;
-import com.github.anselmos.popularmovies.models.enums.ImageSize;
-import com.github.anselmos.popularmovies.models.PopularEntity;
+import com.github.anselmos.popularmovies.models.Trailer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-
-import static com.github.anselmos.popularmovies.utils.ApiAccess.insertImageInView;
 
 /**
  * Created by anselmos on 08.04.17.
  */
-public class MoviesGridViewAdapter extends BaseAdapter {
+public class TrailersListViewAdapter extends BaseAdapter {
     
     private final Context mContext;
     
-    private final ArrayList<PopularEntity> list;
+    private final ArrayList<Trailer> list;
     
-    public MoviesGridViewAdapter(Context context, ArrayList<PopularEntity> list) {
+    public TrailersListViewAdapter(Context context, ArrayList<Trailer> list) {
         this.mContext = context;
         this.list = list;
     }
@@ -53,17 +49,15 @@ public class MoviesGridViewAdapter extends BaseAdapter {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.activity_main, null);
         }
-        ImageView imageView = new ImageView(this.mContext);
-        final PopularEntity popularEntity = this.list.get(position);
-        insertImageInView(this.mContext, imageView, popularEntity.poster_path, ImageSize.SMALL);
-        return imageView;
+        TextView textView = new TextView(this.mContext);
+        final Trailer trailer = this.list.get(position);
+        textView.setText(trailer.name);
+        return textView;
     }
     
-    public void refreshEvents(List<PopularEntity> movies) {
+    public void refreshEvents(List<Trailer> trailers) {
         this.list.clear();
-        this.list.addAll(movies);
+        this.list.addAll(trailers);
         notifyDataSetChanged();
     }
-    
-
 }

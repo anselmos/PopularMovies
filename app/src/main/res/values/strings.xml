@@ -7,4 +7,7 @@
     <string name="top_rated_name">Top Rated</string>
     <string name="most_popular_name">Most Popular</string>
     <string name="refresh">Refresh</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="your_favourites">Your Favourites</string>
 </resources>

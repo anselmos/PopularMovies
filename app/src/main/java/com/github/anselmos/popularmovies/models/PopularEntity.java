@@ -1,12 +1,15 @@
-package com.github.anselmos.popularmovies.entity.jsonapi;
+package com.github.anselmos.popularmovies.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-    
-public class PopularEntity implements Parcelable {
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class PopularEntity  extends RealmObject implements Parcelable{
     
     public String poster_path;
     
@@ -18,6 +21,7 @@ public class PopularEntity implements Parcelable {
     
     public String genre_ids;
     
+    @PrimaryKey
     public int id;
     
     public String original_title;
@@ -35,6 +39,17 @@ public class PopularEntity implements Parcelable {
     public boolean video;
     
     public double vote_average;
+    //Additional user vote not included in API!
+    public float user_vote = 0;
+    
+    public float getUser_vote() {
+        return user_vote;
+    }
+    
+    public void setUser_vote(final float user_vote) {
+        this.user_vote = user_vote;
+    }
+    
     
     @Override
     public int describeContents() { return 0; }
@@ -67,6 +82,8 @@ public class PopularEntity implements Parcelable {
             this.overview = (object.get("overview").toString());
             this.release_date = (object.get("release_date").toString());
             this.vote_average = (object.getDouble("vote_average"));
+            this.id = object.getInt("id");
+            
         }catch(JSONException ex){}
     }
     
