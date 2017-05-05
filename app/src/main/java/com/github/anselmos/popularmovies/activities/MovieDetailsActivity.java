@@ -17,18 +17,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieDetailsActivity extends AppCompatActivity {
     
@@ -52,6 +56,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     
     @BindView(R.id.reviews_linear_layout)
     LinearLayout reviews_linear_layout;
+    
+    @BindView(R.id.rating_bar)
+    RatingBar bar;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +85,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
             reviewTextView.setText(review.content);
             reviews_linear_layout.addView(reviewTextView);
         }
-        
-        
+        bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
+                //TODO put here REALM and adding/removing element.
+                // If rating==0 then remove element.
+                // Check if element exists in REALM!
+                Toast.makeText(getApplicationContext(), "RatingBar" + String.valueOf(rating), Toast.LENGTH_LONG).show();
+            }
+        });
+
+                
+                
+                
+
     }
     
     @NonNull

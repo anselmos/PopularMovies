@@ -34,6 +34,11 @@
             android:id="@+id/image_thumbnail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/rating_bar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
