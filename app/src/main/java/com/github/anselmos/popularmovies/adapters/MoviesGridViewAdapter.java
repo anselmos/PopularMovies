@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.github.anselmos.popularmovies.utils.ApiAccess.insertImageInView;
@@ -63,4 +64,6 @@ public class MoviesGridViewAdapter extends BaseAdapter {
         this.list.addAll(movies);
         notifyDataSetChanged();
     }
+    
+
 }

@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.user_favourites:
                     this.movies.clear();
                     Realm realm = Realm.getDefaultInstance();
-                    RealmResults<PopularEntity> favourites = realm.where(PopularEntity.class).findAll();
+                    RealmResults<PopularEntity> favourites = realm.where(PopularEntity.class).findAllSorted("user_vote");
                     this.adapter.refreshEvents(favourites);
                     break;
             }
